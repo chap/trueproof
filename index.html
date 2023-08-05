@@ -53,7 +53,8 @@
                     if (proof == "76") {
                         for (const temp in lookup[proof]) {
                             var option = document.createElement("option");
-                            option.text = temp;
+                            option.value = temp;
+                            option.text = temp + "°F";
                             tempSelect.add(option);
                         }
                     }
@@ -64,13 +65,14 @@
                 const proof = document.getElementById("proof").value;
                 const temp = document.getElementById("temp").value;
                 const trueProof = document.getElementById("trueProof");
+                const highlighter = document.getElementById("highlighter");
 
                 if (proof != "" && temp != "") {
                     const trueProofValue = lookup[proof][temp];
                     trueProof.textContent = trueProofValue;
-                    trueProof.classList.add("highlight");
+                    highlighter.classList.add("flash");
                     setTimeout(() => {
-                        trueProof.classList.remove("highlight");
+                        highlighter.classList.remove("flash");
                     }, "1000");
                 } else {
                     trueProof.textContent = "True Proof"
@@ -78,30 +80,27 @@
             }
         </script>
         <style>
-            body {
-                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-                font-size: 2rem;
+            .flash {
+                animation: flasher 1s ease-out;
             }
-            .highlight {
-                animation: highlighter 1s ease-out;
-            }
-            @keyframes highlighter {
+            @keyframes flasher {
                 0% {
                     background-color: yellow;
                 }
             }
         </style>
     </head>
-    <body onload="loadForm()" onChange="calculateTrueProof()" class="p-2">
-        <h1 id="trueProof" class="font-extrabold">True Proof</h1>
+    <body onload="loadForm()" onChange="calculateTrueProof()" class="text-3xl">
+        <div id="highlighter" style="position: fixed;top:0;bottom:0;right:0;left:0;z-index:-1;"></div>
+        <h1 id="trueProof" class="font-extrabold text-center text-6xl p-1 py-5">True Proof</h1>
         <form>
-            <p>
+            <p class="p-2">
                 <select id="temp">
                     <option></option>
                 </select>
                 <label for="temp">Temperature</label>
             </p>
-            <p>
+            <p class="p-2">
                 <select id="proof">
                     <option></option>
                 </select>
