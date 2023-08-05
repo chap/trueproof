@@ -1,90 +1,99 @@
 <html>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://cdn.tailwindcss.com"></script>
 
-    <title>
-        True Proof
-    </title>
-    <script>
-        // lookup populates the dropdowns
-        // and provides answer
-        //
-        // "proof": {
-        //      "temperature": "true-proof",
-        const lookup = {
-            "76": {
-                "1": "101.9",
-                "2": "101.5",
-                "3": "101.0",
-                "4": "100.6",
-                "5": "100.2",
-                "6": "99.8",
-                "7": "99.4",
-                "8": "98.9",
-                "9": "98.5",
-                "10": "98.1"
-            },
-            "77": {
-                "1": "102.8",
-                "2": "102.4",
-                "3": "101.9",
-                "4": "101.5",
-                "5": "101.1",
-                "6": "100.7",
-                "7": "100.3",
-                "8": "99.8",
-                "9": "99.4",
-                "10": "99.0"
-            }
-        }
-
-        function loadForm() {
-            const proofSelect = document.getElementById("proof");
-            const tempSelect = document.getElementById("temp");
-
-            for (const proof in lookup) {
-                var option = document.createElement("option");
-                option.text = proof;
-                proofSelect.add(option);
-
-                for (const temp in lookup[proof]) {
-                    var option = document.createElement("option");
-                    option.text = temp;
-                    tempSelect.add(option);
+        <title>
+            True Proof
+        </title>
+        <script>
+            // lookup populates the dropdowns
+            // and provides answer
+            //
+            // "proof": {
+            //      "temperature": "true-proof",
+            const lookup = {
+                "76": {
+                    "1": "101.9",
+                    "2": "101.5",
+                    "3": "101.0",
+                    "4": "100.6",
+                    "5": "100.2",
+                    "6": "99.8",
+                    "7": "99.4",
+                    "8": "98.9",
+                    "9": "98.5",
+                    "10": "98.1"
+                },
+                "77": {
+                    "1": "102.8",
+                    "2": "102.4",
+                    "3": "101.9",
+                    "4": "101.5",
+                    "5": "101.1",
+                    "6": "100.7",
+                    "7": "100.3",
+                    "8": "99.8",
+                    "9": "99.4",
+                    "10": "99.0"
                 }
             }
-        }
 
-        function calculateTrueProof() {
-            const proof = document.getElementById("proof").value;
-            const temp = document.getElementById("temp").value;
+            function loadForm() {
+                const proofSelect = document.getElementById("proof");
+                const tempSelect = document.getElementById("temp");
 
-            if (proof != "" && temp != "") {
-                const trueProofValue = lookup[proof][temp];
+                for (const proof in lookup) {
+                    var option = document.createElement("option");
+                    option.text = proof;
+                    proofSelect.add(option);
+
+                    // only load temps once
+                    if (proof == "76") {
+                        for (const temp in lookup[proof]) {
+                            var option = document.createElement("option");
+                            option.text = temp;
+                            tempSelect.add(option);
+                        }
+                    }
+                }
+            }
+
+            function calculateTrueProof() {
+                const proof = document.getElementById("proof").value;
+                const temp = document.getElementById("temp").value;
                 const trueProof = document.getElementById("trueProof");
-                trueProof.textContent = trueProofValue;
-                trueProof.classList.add("highlight");
-                setTimeout(() => {
-                    trueProof.classList.remove("highlight");
-                }, "1000");
+
+                if (proof != "" && temp != "") {
+                    const trueProofValue = lookup[proof][temp];
+                    trueProof.textContent = trueProofValue;
+                    trueProof.classList.add("highlight");
+                    setTimeout(() => {
+                        trueProof.classList.remove("highlight");
+                    }, "1000");
+                } else {
+                    trueProof.textContent = "True Proof"
+                }
             }
-        }
-    </script>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-            font-size: 2rem;
-        }
-        .highlight {
-            animation: highlighter 1s ease-out;
-        }
-        @keyframes highlighter {
-            0% {
-                background-color: yellow;
+        </script>
+        <style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+                font-size: 2rem;
             }
-        }
-    </style>
-    <body onload="loadForm()" onChange="calculateTrueProof()">
-        <h1 id="trueProof">True Proof</h1>
+            .highlight {
+                animation: highlighter 1s ease-out;
+            }
+            @keyframes highlighter {
+                0% {
+                    background-color: yellow;
+                }
+            }
+        </style>
+    </head>
+    <body onload="loadForm()" onChange="calculateTrueProof()" class="p-2">
+        <h1 id="trueProof" class="font-extrabold">True Proof</h1>
         <form>
             <p>
                 <select id="temp">
